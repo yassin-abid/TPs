@@ -1,0 +1,117 @@
+<form #bookForm="ngForm" (ngSubmit)="onSubmit(bookForm)">
+  <div>
+    <label for="title">Titre :</label>
+    <input 
+      type="text" 
+      id="title" 
+      name="title" 
+      [(ngModel)]="book.title" 
+      required 
+      minlength="3"
+      pattern=".*[^0-9].*"
+      #title="ngModel">
+    <div *ngIf="title.invalid && title.touched" style="color: red;">
+      <small *ngIf="title.errors?.['required']">Le titre est obligatoire.</small>
+      <small *ngIf="title.errors?.['minlength']">Le titre doit contenir au moins 3 caractères.</small>
+      <small *ngIf="title.errors?.['pattern']">Le titre ne peut pas être composé uniquement de chiffres.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="author">Auteur :</label>
+    <input 
+      type="text" 
+      id="author" 
+      name="author" 
+      [(ngModel)]="book.author" 
+      required 
+      minlength="3"
+      #author="ngModel">
+    <div *ngIf="author.invalid && author.touched" style="color: red;">
+      <small *ngIf="author.errors?.['required']">L'auteur est obligatoire.</small>
+      <small *ngIf="author.errors?.['minlength']">L'auteur doit contenir au moins 3 caractères.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="publisherEmail">Email de l'éditeur :</label>
+    <input 
+      type="email" 
+      id="publisherEmail" 
+      name="publisherEmail" 
+      [(ngModel)]="book.publisherEmail" 
+      required 
+      email
+      #publisherEmail="ngModel">
+    <div *ngIf="publisherEmail.invalid && publisherEmail.touched" style="color: red;">
+      <small *ngIf="publisherEmail.errors?.['required']">L'email est obligatoire.</small>
+      <small *ngIf="publisherEmail.errors?.['email']">L'email n'est pas valide.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="publisherPhone">Téléphone de l'éditeur :</label>
+    <input 
+      type="tel" 
+      id="publisherPhone" 
+      name="publisherPhone" 
+      [(ngModel)]="book.publisherPhone" 
+      pattern="^[0-9]{8}$"
+      #publisherPhone="ngModel">
+    <div *ngIf="publisherPhone.invalid && publisherPhone.touched" style="color: red;">
+      <small *ngIf="publisherPhone.errors?.['pattern']">Le téléphone doit contenir 8 chiffres.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="releaseDate">Date de publication :</label>
+    <input 
+      type="date" 
+      id="releaseDate" 
+      name="releaseDate" 
+      [(ngModel)]="book.releaseDate" 
+      required 
+      min="1900-01-01"
+      [max]="maxDate"
+      #releaseDate="ngModel">
+    <div *ngIf="releaseDate.invalid && releaseDate.touched" style="color: red;">
+      <small *ngIf="releaseDate.errors?.['required']">La date de publication est obligatoire.</small>
+      <small *ngIf="releaseDate.errors?.['min']">La date doit être après 1900.</small>
+      <small *ngIf="releaseDate.errors?.['max']">La date ne peut pas être dans le futur.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="category">Catégorie :</label>
+    <select 
+      id="category" 
+      name="category" 
+      [(ngModel)]="book.category" 
+      required
+      #category="ngModel">
+      <option value="">Sélectionnez une catégorie</option>
+      <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+    </select>
+    <div *ngIf="category.invalid && category.touched" style="color: red;">
+      <small *ngIf="category.errors?.['required']">La catégorie est obligatoire.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="stock">Stock :</label>
+    <input 
+      type="number" 
+      id="stock" 
+      name="stock" 
+      [(ngModel)]="book.stock" 
+      min="0"
+      #stock="ngModel">
+    <div *ngIf="stock.invalid && stock.touched" style="color: red;">
+      <small *ngIf="stock.errors?.['min']">Le stock doit être supérieur ou égal à 0.</small>
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="bookForm.invalid">
+    {{ isEditMode ? 'Mettre à jour' : 'Ajouter le livre' }}
+  </button>
+</form>

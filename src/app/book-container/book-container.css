@@ -1,0 +1,14 @@
+:host {
+  display: block;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+app-book-form {
+  display: block;
+  margin-bottom: 30px;
+}
+
+app-book-list {
+  display: block;
+}
