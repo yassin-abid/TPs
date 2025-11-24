@@ -1,0 +1,81 @@
+<div class="game-container" *ngIf="currentQuestion">
+  <!-- En-tête avec statistiques en temps réel (Défi 2) -->
+  <div class="game-header">
+    <div class="stats">
+      <div class="stat-item correct">
+        <span class="stat-label">Bonnes réponses</span>
+        <span class="stat-value">{{ bonnesReponses }}</span>
+      </div>
+      <div class="stat-item score">
+        <span class="stat-label">Score</span>
+        <span class="stat-value">{{ score }}</span>
+      </div>
+      <div class="stat-item incorrect">
+        <span class="stat-label">Mauvaises réponses</span>
+        <span class="stat-value">{{ mauvaisesReponses }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Barre de progression -->
+  <div class="progress-container">
+    <div class="progress-bar" [style.width.%]="progress"></div>
+  </div>
+  <p class="question-counter">
+    Question {{ currentQuestionIndex + 1 }} sur {{ questions.length }}
+  </p>
+
+  <!-- Chronomètre (Défi 3) -->
+  <div class="timer-container" [class.warning]="timeLeft <= 10" [class.danger]="timeLeft <= 5">
+    <div class="timer-icon">⏱️</div>
+    <div class="timer-value">{{ timeLeft }}s</div>
+  </div>
+
+  <!-- Question -->
+  <div class="question-card">
+    <h2 class="question-text">{{ currentQuestion.question }}</h2>
+
+    <!-- Options de réponse avec boutons -->
+    <app-question-component
+      [question]="currentQuestion"
+      [isAnswered]="isAnswered"
+      [selectedOption]="selectedOption"
+      (optionSelected)="onSelectOption($event)"
+    ></app-question-component>
+
+    <!-- Two-way data binding pour saisie directe (optionnel) -->
+    <div class="input-container">
+      <label for="directInput">Ou entrez votre réponse :</label>
+      <input
+        id="directInput"
+        type="text"
+        [(ngModel)]="userInput"
+        [disabled]="isAnswered"
+        placeholder="Tapez votre réponse ici"
+        class="answer-input"
+      />
+    </div>
+
+    <!-- Message de feedback -->
+    <div *ngIf="isAnswered" class="feedback">
+      <p *ngIf="selectedOption === currentQuestion.reponse" class="correct-message">
+        ✓ Excellente réponse ! +10 points
+      </p>
+      <p *ngIf="selectedOption !== currentQuestion.reponse && selectedOption" class="incorrect-message">
+        ✗ Incorrect ! La bonne réponse était : {{ currentQuestion.reponse }}
+      </p>
+      <p *ngIf="!selectedOption && timeLeft === 0" class="timeout-message">
+        ⏰ Temps écoulé ! La bonne réponse était : {{ currentQuestion.reponse }}
+      </p>
+    </div>
+
+    <!-- Bouton suivant -->
+    <button
+      *ngIf="isAnswered"
+      class="next-button"
+      (click)="nextQuestion()"
+    >
+      {{ isLastQuestion ? 'Voir les résultats' : 'Question suivante' }}
+    </button>
+  </div>
+</div>

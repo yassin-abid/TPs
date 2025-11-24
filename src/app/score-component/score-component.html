@@ -1,0 +1,56 @@
+<div class="score-container">
+  <div class="score-card">
+    <h1 class="title">Résultats du Quiz</h1>
+    
+    <div class="performance-badge" [class]="performanceClass">
+      <div class="performance-text">{{ performance }}</div>
+      <div class="percentage">{{ pourcentage | number:'1.0-0' }}%</div>
+    </div>
+
+    <div class="score-display">
+      <div class="score-main">
+        <span class="score-label">Score Final</span>
+        <span class="score-value">{{ score }}</span>
+      </div>
+    </div>
+
+    <div class="statistics">
+      <div class="stat-card correct">
+        <div class="stat-icon">✔</div>
+        <div class="stat-details">
+          <div class="stat-number">{{ bonnesReponses }}</div>
+          <div class="stat-label">Bonnes réponses</div>
+        </div>
+      </div>
+
+      <div class="stat-card incorrect">
+        <div class="stat-icon">✘</div>
+        <div class="stat-details">
+          <div class="stat-number">{{ mauvaisesReponses }}</div>
+          <div class="stat-label">Mauvaises réponses</div>
+        </div>
+      </div>
+
+      <div class="stat-card total">
+        <div class="stat-icon">📊</div>
+        <div class="stat-details">
+          <div class="stat-number">{{ totalQuestions }}</div>
+          <div class="stat-label">Questions totales</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress-bar-container">
+      <div class="progress-bar" [style.width.%]="pourcentage" [class]="performanceClass"></div>
+    </div>
+
+    <div class="actions">
+      <button class="action-button retry" (click)="restartQuiz()">
+        🔄 Recommencer le Quiz
+      </button>
+      <button class="action-button home" (click)="goHome()">
+        🏠 Retour à l'accueil
+      </button>
+    </div>
+  </div>
+</div>
